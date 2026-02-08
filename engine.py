@@ -10,7 +10,7 @@ def ingest_data(file_path: str="raw_data.csv", row_frequency: int=100000) -> Gen
     """
     try:
         with open(file_path, "r") as file:
-            # Consuming the first line (the header) to move the pointer forward
+            # Consuming the first line (the header) to move the pointer forward and retrieve keys for the dict
             keys = next(file, None).strip().split(",")
             for row_count, line in enumerate(file, 1):
                 if row_count % row_frequency == 0:
