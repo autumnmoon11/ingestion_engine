@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import Any
 
 class Destination(ABC):
     @abstractmethod
-    def write(self, data: Any) -> None:
+    def write(self, data: dict) -> None:
         pass
 
     def __enter__(self):
@@ -16,8 +15,8 @@ class FileDestination(Destination):
     def __init__(self, file_path: str):
         self.file_path = file_path
 
-    def write(self, data: str) -> None:
-        self.file.write(data)
+    def write(self, data: dict) -> None:
+        self.file.write(",".join(map(str, data.values())) + "\n")
 
     def __enter__(self):
         self.file = open(self.file_path, "w")
@@ -27,12 +26,12 @@ class FileDestination(Destination):
         self.file.close()
 
 class ConsoleDestination(Destination):
-    def write(self, data: str) -> None:
+    def write(self, data: dict) -> None:
         print(data)
 
 class CloudDestination(Destination):
     def __init__(self, cloud_provider: str):
         self.cloud_provider = cloud_provider
 
-    def write(self, data: str) -> None:
+    def write(self, data: dict) -> None:
         print(f"Writing data to {self.cloud_provider}: {data}")
