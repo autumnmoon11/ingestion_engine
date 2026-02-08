@@ -1,0 +1,7 @@
+# requirements.txt
+# Core dependencies for the Ingestion Engine
+pathlib>=1.0.1; python_version < '3.4'
+# Note: Pathlib is built into Python 3.4+, but listed for environment compatibility.
+
+# Optional: for future cloud strategies
+# boto3  # If implementing S3CloudDestination
