@@ -50,6 +50,10 @@ Add IDs to `data/blocked_ids.txt` (one per line). The engine uses a **Set** for 
 Execute the main orchestrator:
 `python main.py`
 
+### Running Tests
+To ensure the pathing is handled correctly across different environments, run the tests from the root directory using the Python module flag:
+`python -m pytest`
+
 ---
 
 ## 📝 Design Patterns Applied
