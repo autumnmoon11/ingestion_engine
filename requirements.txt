@@ -1,10 +1,11 @@
 # requirements.txt
-# Core dependencies for the Ingestion Engine
+# Core Data Processing
 pathlib>=1.0.1; python_version < '3.4'
-# Note: Pathlib is built into Python 3.4+, but listed for environment compatibility.
 
-# Development & Testing
-pytest>=9.0.0
+# AI & Cloud Integration
+openai>=1.0.0
+azure-identity>=1.15.0
+python-dotenv>=1.0.0
 
-# Optional: for future cloud strategies
-# boto3  # If implementing S3CloudDestination
+# Testing & Quality Assurance
+pytest>=8.0.0

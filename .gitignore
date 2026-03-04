@@ -6,6 +6,7 @@ __pycache__/
 data/*.csv
 data/blocked_ids.txt
 .DS_Store
+.env
 # Testing
 .pytest_cache/
 __pycache__/
