@@ -19,7 +19,7 @@ class AzureEmbeddingClient:
         """
         Converts a string of text into a list of floats (vector).
         """
-        # Clean the text (AI models don't like newlines in embeddings)
+        # Clean the text to avoid newlines in embeddings
         text = text.replace("\n", " ")
         
         response = self.client.embeddings.create(
@@ -27,7 +27,7 @@ class AzureEmbeddingClient:
             model=self.deployment_name
         )
         
-        # The actual vector is hidden inside the response object
+        # The actual vector is in the response object
         return response.data[0].embedding
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-from engine import ingest_data, filter_data
+from engine import ingest_data, filter_data, AITransformer
 from destinations import Destination, FileDestination
 from utils.time_execution import time_execution_decorator
 from pathlib import Path
@@ -6,11 +6,22 @@ from pathlib import Path
 @time_execution_decorator
 def run_ingestion(destination: Destination, blocked_ids: set, input_csv: Path):
     """Orchestrates the data stream from extraction to loading."""
+
+    ai_transformer = AITransformer()
+
     with destination as dest:
         raw_stream = ingest_data(input_csv, row_frequency=1)
         filtered_stream = filter_data(raw_stream, blocked_ids)
         for row in filtered_stream:
-            dest.write(row)
+            enriched_row = ai_transformer.transform_row(row)
+
+            # If printing to console, truncate the vector for readability
+            if "embedding" in enriched_row:
+                display_row = enriched_row.copy()
+                display_row["embedding"] = f"[{enriched_row['embedding'][0]:.4f}, ...]"
+                dest.write(display_row)
+            else:
+                dest.write(enriched_row)
 
 def load_blocked_ids(file_path: str) -> set:
     try:
@@ -23,7 +34,7 @@ def load_blocked_ids(file_path: str) -> set:
 def main():
     # 1. Load configuration/dependencies
     data_path = Path("data") 
-    input_csv = data_path / "raw_data.csv"
+    input_csv = data_path / "semantic_data.csv"
     blocked_txt = data_path / "blocked_ids.txt"
     output_csv = data_path / "output.csv"
 

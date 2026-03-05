@@ -1,63 +1,63 @@
-# High-Performance Data Ingestion Engine
+# 🐍 High-Performance Data Ingestion Engine
 
-A memory-efficient ETL (Extract, Transform, Load) pipeline built in Python. This engine is designed to process large-scale CSV datasets (1M+ rows) with a constant memory footprint ($O(1)$ space complexity) and high throughput using **Generator Composition** and the **Strategy Pattern**.
-
-
+A memory-efficient ETL (Extract, Transform, Load) pipeline built in Python. This engine is designed to process large-scale datasets with a constant memory footprint ($O(1)$ space complexity) and features a **Hybrid AI Transformation** layer for RAG-ready data enrichment.
 
 ---
 
-## 🚀 Performance Metrics
-* **Throughput:** ~360,000 rows per second.
-* **Processing Time:** ~2.78 seconds for 1,000,000 rows.
+## 🚀 Performance & AI Metrics
+* **Throughput:** ~360,000 rows per second (Standard ETL).
+* **AI Latency:** Dependent on Azure OpenAI API response times (~200ms per embedding).
 * **Memory Usage:** Constant $O(1)$ (approx. < 50MB RAM), regardless of input file size.
+* **Vector Dimensionality:** 1536-dimension embeddings via `text-embedding-3-small`.
 
 ---
 
 ## 🛠 Architectural Highlights
+* **Hybrid Pipeline:** Combines traditional $O(1)$ membership filtering (via Sets) with unstructured text enrichment using **Azure OpenAI**.
 * **Generator-Based Extraction:** Uses lazy evaluation to stream data one row at a time, preventing memory overflows.
 * **Strategy Pattern:** Decoupled output logic allows for swappable destinations (Console, Local File, or Cloud) without modifying the core engine.
-* **Dependency Injection:** The ingestion runner accepts abstract `Destination` types and path configurations, making the system highly testable.
-* **Meta-programming:** A custom execution-time decorator provides non-intrusive performance monitoring and telemetry via attribute attachment.
-* **Robust Data Mapping:** Uses `dict(zip(keys, values))` for schema-aware row processing, making the filter logic resilient to CSV column reordering.
-
-
+* **Cloud-Native AI Integration:** Implements the **Project Gateway** pattern via Microsoft Foundry for centralized model management.
+* **Meta-programming:** A custom execution-time decorator provides non-intrusive performance monitoring and telemetry.
 
 ---
 
 ## 📁 Project Structure
 
-* **data/**: Data storage (ignored by git, except .gitkeep)
-* **utils/**: Utilities including `data_gen.py` and `time_execution.py`
-* **engine.py**: Core Extractor and Transformer logic
-* **destinations.py**: Strategy Pattern implementations (ABC)
-* **main.py**: Application bootstrap and orchestration
+* **data/**: Data storage (CSV, TXT, JSONL).
+* **utils/**: 
+    * `data_gen.py`: Mock and Semantic data generators.
+    * `ai_utils.py`: Azure OpenAI client and embedding logic.
+    * `time_execution.py`: Telemetry decorator.
+* **engine.py**: Core Extractor, Filter, and `AITransformer` logic.
+* **destinations.py**: Strategy Pattern implementations (ABC).
+* **main.py**: Application bootstrap and orchestration.
 
 ---
 
 ## ⚙️ Setup and Usage
 
 ### 1. Environment Setup
-Clone the repository. The directory structure uses `pathlib` for cross-platform compatibility between Windows and Unix-based systems.
+Create a `.env` file in the root with your Azure credentials:
+```text
+AZURE_OPENAI_API_KEY=your_key
+AZURE_OPENAI_ENDPOINT=your_endpoint
+AZURE_OPENAI_DEPLOYMENT_NAME=text-embedding-3
 
-### 2. Generate Test Data
-To stress-test the engine with a million-row dataset, run the utility script from the root:
+### 2. Generate Semantic Data
+Generate a dataset with natural language text for AI processing:
 `python utils/data_gen.py`
 
-### 3. Configure Filter
-Add IDs to `data/blocked_ids.txt` (one per line). The engine uses a **Set** for these IDs to maintain $O(1)$ lookup speeds during the transformation phase.
-
-### 4. Run the Pipeline
-Execute the main orchestrator:
+### 3. Run the AI-Enriched Pipeline
+Execute the main orchestrator to filter data and generate embeddings:
 `python main.py`
-
-### Running Tests
-To ensure the pathing is handled correctly across different environments, run the tests from the root directory using the Python module flag:
-`python -m pytest`
 
 ---
 
 ## 📝 Design Patterns Applied
 * **Strategy:** `Destination` Abstract Base Class (ABC) for polymorphic output.
-* **Context Manager:** Resource lifecycle management (`__enter__`/`__exit__`) for safe, lazy file handling.
-* **Decorator:** Clean separation of concerns for telemetry and performance logging.
-* **Liskov Substitution:** All destination subclasses can be swapped without altering the `run_ingestion` logic.
+* **Adapter/Wrapper:** `AITransformer` wraps the OpenAI API to provide a clean interface for the engine.
+* **Context Manager:** Resource lifecycle management for safe, lazy file handling.
+* **Liskov Substitution:** AI-enriched rows remain compatible with all existing destination types.
+
+---
+**Last Refined:** March 2026

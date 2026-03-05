@@ -2,6 +2,7 @@ from typing import Generator, Set
 from collections.abc import Iterable
 from pathlib import Path
 import csv
+from utils.ai_utils import AzureEmbeddingClient
 
 
 def ingest_data(file_path: Path, row_frequency: int=1) -> Generator[dict, None, None]:
@@ -47,7 +48,26 @@ def filter_data(data_stream: Iterable[dict], block_list: Set[str]) -> Generator[
     """
     try:
         for row in data_stream:
-            if row.get("id") not in block_list:
+            row_id = row.get("id") or row.get("ID")
+            if row_id not in block_list:
                 yield row
     except Exception as e:
         raise RuntimeError(f"Error filtering data: {e}") from e
+    
+
+class AITransformer:
+    def __init__(self):
+        self.ai_client = AzureEmbeddingClient()
+
+    def transform_row(self, row: dict):
+        """
+        Takes a data row, generates an embedding for the 'Review_Text',
+        and attaches it to the dictionary.
+        """
+        text_to_embed = row.get("Review_Text", "")
+        
+        if text_to_embed:
+            vector = self.ai_client.get_embedding(text_to_embed)
+            row["embedding"] = vector
+            
+        return row
