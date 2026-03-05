@@ -42,6 +42,7 @@ Create a `.env` file in the root with your Azure credentials:
 AZURE_OPENAI_API_KEY=your_key
 AZURE_OPENAI_ENDPOINT=your_endpoint
 AZURE_OPENAI_DEPLOYMENT_NAME=text-embedding-3
+```
 
 ### 2. Generate Semantic Data
 Generate a dataset with natural language text for AI processing:
