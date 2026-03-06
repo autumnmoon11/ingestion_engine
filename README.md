@@ -15,7 +15,8 @@ A memory-efficient ETL (Extract, Transform, Load) pipeline built in Python. This
 ## 🛠 Architectural Highlights
 * **Hybrid Pipeline:** Combines traditional $O(1)$ membership filtering (via Sets) with unstructured text enrichment using **Azure OpenAI**.
 * **Generator-Based Extraction:** Uses lazy evaluation to stream data one row at a time, preventing memory overflows.
-* **Strategy Pattern:** Decoupled output logic allows for swappable destinations (Console, Local File, or Cloud) without modifying the core engine.
+* **Strategy Pattern:** Decoupled output logic via `Destination` ABC. Supports `CSVDestination` for traditional reporting and `JSONLDestination` for AI/Vector workloads.
+* **Cross-Platform Pathing:** Fully migrated to `pathlib.Path` for robust file handling across Windows, macOS, and Linux.
 * **Cloud-Native AI Integration:** Implements the **Project Gateway** pattern via Microsoft Foundry for centralized model management.
 * **Meta-programming:** A custom execution-time decorator provides non-intrusive performance monitoring and telemetry.
 
@@ -30,6 +31,9 @@ A memory-efficient ETL (Extract, Transform, Load) pipeline built in Python. This
     * `time_execution.py`: Telemetry decorator.
 * **engine.py**: Core Extractor, Filter, and `AITransformer` logic.
 * **destinations.py**: Strategy Pattern implementations (ABC).
+    * `CSVDestination`: Standard tabular output.
+    * `JSONLDestination`: Optimized for vectors/RAG (preserves arrays).
+    * `ConsoleDestination`: High-readability terminal output with vector truncation.
 * **main.py**: Application bootstrap and orchestration.
 
 ---

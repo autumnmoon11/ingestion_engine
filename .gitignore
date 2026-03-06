@@ -4,6 +4,7 @@ __pycache__/
 *.log
 *.csv
 data/*.csv
+data/*.jsonl
 data/blocked_ids.txt
 .DS_Store
 .env

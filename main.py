@@ -1,5 +1,5 @@
 from engine import ingest_data, filter_data, AITransformer
-from destinations import Destination, FileDestination
+from destinations import Destination, JSONLDestination
 from utils.time_execution import time_execution_decorator
 from pathlib import Path
 
@@ -36,15 +36,15 @@ def main():
     data_path = Path("data") 
     input_csv = data_path / "semantic_data.csv"
     blocked_txt = data_path / "blocked_ids.txt"
-    output_csv = data_path / "output.csv"
+    output_jsonl = data_path / "output.jsonl"
 
     blocked = load_blocked_ids(blocked_txt)
     
     # 2. Strategy Selection (Change to ConsoleDestination() to test)
-    dest = FileDestination(output_csv)
+    dest = JSONLDestination(output_jsonl)
 
     # 3. Execution
-    print("--- Pipeline Started ---")
+    print("--- AI-Enriched JSONLPipeline Started ---")
     run_ingestion(dest, blocked, input_csv)
     
     # 4. Telemetry Report
