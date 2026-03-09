@@ -42,11 +42,24 @@ if __name__ == "__main__":
     else:
         searcher = SemanticSearcher(output_file)
         
-        # Example test question
-        user_query = "Are there any reports of battery issues?"
-        matches = searcher.search(user_query)
-        
-        print("\n--- Top Semantic Matches ---")
-        for score, row in matches:
-            print(f"[Score: {score:.4f}] Product: {row['Product']}")
-            print(f"Review: {row['Review_Text']}\n")
+        print("\n" + "="*40)
+        print("🚀 Semantic Search Engine Active")
+        print("Type your questions below. Type 'exit' to quit.")
+        print("="*40)
+
+        while True:
+            user_query = input("\n🔍 Ask a question: ").strip()
+            
+            if user_query.lower() in ["exit", "quit", "q"]:
+                print("👋 Exiting search engine. Goodbye!")
+                break
+            
+            if not user_query:
+                continue
+
+            matches = searcher.search(user_query)
+            
+            print("\n--- Top Semantic Matches ---")
+            for i, (score, row) in enumerate(matches, 1):
+                print(f"{i}. [Score: {score:.4f}] {row['Product']}")
+                print(f"   Review: {row['Review_Text']}\n")

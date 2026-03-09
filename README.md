@@ -66,6 +66,14 @@ Generate a dataset with natural language text for AI processing:
 Execute the main orchestrator to filter data and generate embeddings:
 `python main.py`
 
+### 4. Interactive Semantic Search
+The engine includes a REPL (Read-Eval-Print Loop) for real-time data querying:
+`python search.py`
+
+* **Natural Language:** Ask questions like "Which products have power issues?"
+* **Contextual Ranking:** Results are returned with a similarity score (0.0 to 1.0).
+* **Interactive:** Stay in the session to refine queries or test different semantic angles.
+
 ---
 
 ## 📝 Design Patterns Applied
