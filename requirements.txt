@@ -1,6 +1,7 @@
 # requirements.txt
 # Core Data Processing
 pathlib>=1.0.1; python_version < '3.4'
+numpy>=1.26.0
 
 # AI & Cloud Integration
 openai>=1.0.0

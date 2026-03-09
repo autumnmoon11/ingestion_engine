@@ -14,14 +14,7 @@ def run_ingestion(destination: Destination, blocked_ids: set, input_csv: Path):
         filtered_stream = filter_data(raw_stream, blocked_ids)
         for row in filtered_stream:
             enriched_row = ai_transformer.transform_row(row)
-
-            # If printing to console, truncate the vector for readability
-            if "embedding" in enriched_row:
-                display_row = enriched_row.copy()
-                display_row["embedding"] = f"[{enriched_row['embedding'][0]:.4f}, ...]"
-                dest.write(display_row)
-            else:
-                dest.write(enriched_row)
+            dest.write(enriched_row)
 
 def load_blocked_ids(file_path: str) -> set:
     try:
@@ -32,7 +25,6 @@ def load_blocked_ids(file_path: str) -> set:
         return set() # Fail gracefully with an empty set
 
 def main():
-    # 1. Load configuration/dependencies
     data_path = Path("data") 
     input_csv = data_path / "semantic_data.csv"
     blocked_txt = data_path / "blocked_ids.txt"
@@ -40,14 +32,12 @@ def main():
 
     blocked = load_blocked_ids(blocked_txt)
     
-    # 2. Strategy Selection (Change to ConsoleDestination() to test)
     dest = JSONLDestination(output_jsonl)
 
-    # 3. Execution
     print("--- AI-Enriched JSONLPipeline Started ---")
     run_ingestion(dest, blocked, input_csv)
     
-    # 4. Telemetry Report
+    # Telemetry Report
     if hasattr(run_ingestion, "last_execution_time"):
         print(f"Pipeline finished in: {run_ingestion.last_execution_time}s")
 

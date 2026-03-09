@@ -22,6 +22,15 @@ A memory-efficient ETL (Extract, Transform, Load) pipeline built in Python. This
 
 ---
 
+## 🔍 Semantic Search Utility
+The engine includes a `search.py` utility that demonstrates the practical application of the ingested vectors. Unlike traditional keyword search, this utility uses **Cosine Similarity** to find relevant data based on meaning.
+
+* **Vector Comparison:** Uses `numpy` for high-performance linear algebra operations on 1536-dimension arrays.
+* **Semantic Retrieval:** Capable of finding "battery issues" even if the query uses different terminology (e.g., "power problems").
+* **Memory Efficient:** Streams the `.jsonl` source file to maintain a low memory profile during search.
+
+---
+
 ## 📁 Project Structure
 
 * **data/**: Data storage (CSV, TXT, JSONL).
@@ -34,6 +43,7 @@ A memory-efficient ETL (Extract, Transform, Load) pipeline built in Python. This
     * `CSVDestination`: Standard tabular output.
     * `JSONLDestination`: Optimized for vectors/RAG (preserves arrays).
     * `ConsoleDestination`: High-readability terminal output with vector truncation.
+* **search.py**: Semantic search interface using NumPy and Azure OpenAI embeddings.
 * **main.py**: Application bootstrap and orchestration.
 
 ---
